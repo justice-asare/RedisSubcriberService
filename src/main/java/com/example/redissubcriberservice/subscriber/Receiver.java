@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +21,6 @@ public class Receiver {
     public static List<Product> exchangeTwoMarketData = new ArrayList<>();
     Logger logger = LoggerFactory.getLogger(Receiver.class);
     ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    RestTemplate restTemplate;
-
-    @PostConstruct
-    public void sendInitialData() {
-        exchangeOneMarketData = restTemplate.getForObject("https://exchange.matraining.com/md", List.class);
-        exchangeTwoMarketData = restTemplate.getForObject("https://exchange2.matraining.com/md", List.class);
-    }
-
 
     public void marketDataFromExchangeOne(String message) throws JsonProcessingException {
         Product[] productList = objectMapper.readValue(message, Product[].class);
